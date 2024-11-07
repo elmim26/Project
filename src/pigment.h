@@ -15,6 +15,25 @@ int loadPigmentData(char* filename, pigment_t* pArray, int* n);
 
 
 
+int loadPaintData(char* filename, paint_t* pArray, int* n){
+typedef struct{
+    char ciName[];
+    char marketingName[100];
+    char manufacturer[50];
+    int transparency;
+    int staining;
+    int valueRange;
+    int granulating;
+    int blossom;
+    int diffusion;
+    int hueAngle;
+    int hueShift;
+    int lightfast;
+}
+
+
+
+
 
 
 
