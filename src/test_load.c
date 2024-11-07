@@ -1,20 +1,22 @@
 #include <stdio.h>
 #include "pigment.h"
 
-int main(void) {
-    pigment_t pigments[100];  // Array to store 100 pigments
-    int n = 0;
+int main() {
+    pigment_t pigments[100];  // array to store 100 pigments
+    int n = 0;                // variable to hold count of pigments
 
+    //load pigment data
     int result = loadPigmentData("pigments.dat", pigments, &n);
     if (result != 0) {
-        printf("pigment data load failed.\n");
+        printf("Failed to load pigment data.\n");
         return 1;
     }
-}
- printf("Loaded %d pigments:\n", n);
 
-  for (int i = 0; i < n; i++){
-     printf("Pigment %d: CI Name: %s, Pigment Name: %s,Value: %d,Chroma: %d,aC: %d,bC: %d,Hue Angle: %d,Hue Purity: %.2f,aHP: %.2f,bHP: %.2f\n",
+    printf("Loaded %d pigments:\n", n);  // Use n to show the count of loaded pigments
+
+    // Loop through array to display each pigment
+    for (int i = 0; i < n; i++) {
+        printf("Pigment %d: CI Name: %s, Pigment Name: %s, J Value: %d, Chroma: %d, aC: %d, bC: %d, Hue Angle: %d, Hue Purity: %.2f, aHP: %.2f, bHP: %.2f\n",
                i + 1,
                pigments[i].ciName,
                pigments[i].pigmentName,
@@ -28,10 +30,5 @@ int main(void) {
                pigments[i].abHp[1]);
     }
 
-     return 0;
-
-
-
-
-
-  }
+    return 0;
+}

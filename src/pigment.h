@@ -1,8 +1,7 @@
-int loadPigmentData(char* filename, pigment_t* pArray, int* n);
-
+#define PIGMENT_H
 
 typedef struct{
-    char ciName[];       
+    char ciName[50];       
     char pigmentName[50];  
     int value;             
     int chroma;            
@@ -11,6 +10,9 @@ typedef struct{
     float huePurity;     
     float abHp[2];         
 }pigment_t;
+
+int loadPigmentData(char* filename, pigment_t* pArray, int* n);
+
 
 
 

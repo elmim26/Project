@@ -1,16 +1,16 @@
 CC := gcc
-CFLAGS := -c -Wall
-
-.PHONY: clean install Package
-
-q04: q04.o
-	$(CC) -o $@ $^ -lm
+CFLAGS := -Wall
 
 
-%.o: %.c
-	$(CC) $(CFLAGS) $<
 
+test_load: pigment.o test_load.o
+	$(CC) -o test_load pigment.o test_load.o
 
-.PHONY: clean
+pigment.o: pigment.c pigment.h
+	$(CC) $(CFLAGS) -c pigment.c
+
+test_load.o: test_load.c pigment.h
+	$(CC) $(CFLAGS) -c test_load.c
+
 clean:
-	rm -f *.o project
+	rm -f *.o test_load
