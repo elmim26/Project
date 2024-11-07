@@ -10,4 +10,5 @@ int loadPaintData(char* filename, paint_t* pArray, int* n){
         *n = 0;
         
     }
-}
+} 
+//Hello
