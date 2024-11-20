@@ -14,7 +14,7 @@ int main() {
 
     printf("Loaded %d pigments:\n", n);  // Use n to show the count of loaded pigments
 
-    // Loop through array to display each pigment
+    // loop through array to display each pigment
     for (int i = 0; i < n; i++) {
         printf("Pigment %d: CI Name: %s, Pigment Name: %s, J Value: %d, Chroma: %d, aC: %d, bC: %d, Hue Angle: %d, Hue Purity: %.2f, aHP: %.2f, bHP: %.2f\n",
                i + 1,
