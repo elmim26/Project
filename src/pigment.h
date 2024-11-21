@@ -1,5 +1,6 @@
 #ifndef PIGMENT_H  
 #define PIGMENT_H
+#include <stdlib.h>
 
 // Definition of pigment_t structure
 typedef struct {
@@ -12,6 +13,9 @@ typedef struct {
     float huePurity;       // Hue purity
     float abHp[2];         // aHP and bHP values
 } pigment_t;
+
+typedef enum {ciName,marketingName,manufacturer} gValue_t //enumerator for q4
+
 
 // Definition of paint_t structure
 typedef struct {
@@ -29,8 +33,29 @@ typedef struct {
     int lightfast;              
 } paint_t;
 
-// Function prototypes
+// Function prototypes of milestone 1
 int loadPigmentData(char* filename, pigment_t* pArray, int* n);
 int loadPaintData(char* filename, paint_t* pArray, int* n);
 
-#endif  
+
+
+//prototypes for milestone 2
+int printPigment(pigment_t* pp, int i, int n); //q1
+paint* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* nspp ) //q4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
