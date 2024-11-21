@@ -48,7 +48,7 @@ int loadPigmentData(char* filename, pigment_t* pArray, int* n) {
 
 
 // Function to load paint data
-int loadPaintData(char* filename, paint_t* pArray, int* n) {
+int loadPaintData(char* filename, paint_t* pArray, int* x) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         printf("Error: Could not open file %s\n", filename);
@@ -57,35 +57,40 @@ int loadPaintData(char* filename, paint_t* pArray, int* n) {
 
     int count = 0;
 
-    // Skip header lines 
+    // Skip header lines
     char header[200];
     while (fgets(header, sizeof(header), file) && header[0] == '#') {
         printf("Skipping header: %s", header);  
     }
 
     // Read data lines 
-    while (fscanf(file, "%49[^,],%99[^,],%49[^,],%d,%d,%d,%d,%d,%d,%d,%d,%d",
-                  pArray[count].ciName,
-                  pArray[count].marketingName,
-                  pArray[count].manufacturer,
-                  &pArray[count].transparency,
-                  &pArray[count].staining,
-                  &pArray[count].valueRange,
-                  &pArray[count].granulating,
-                  &pArray[count].blossom,
-                  &pArray[count].diffusion,
-                  &pArray[count].hueAngle,
-                  &pArray[count].hueShift,
-                  &pArray[count].lightfast) == 12) {
-        printf("Read paint %d: CI Name: %s, Marketing Name: %s\n",
-               count + 1, pArray[count].ciName, pArray[count].marketingName);  
-        count++;
+    char line[200];
+    while (fgets(line, sizeof(line), file)) {
+        // Parse the line using sscanf, matching the expected format
+        if (sscanf(line, "%49[^,],%99[^,],%49[^,],%d,%d,%d,%d,%d,%d,%d,%d,%d/%d",
+                   pArray[count].ciName,
+                   pArray[count].marketingName,
+                   pArray[count].manufacturer,
+                   &pArray[count].transparency,
+                   &pArray[count].staining,
+                   &pArray[count].valueRange,
+                   &pArray[count].granulating,
+                   &pArray[count].blossom,
+                   &pArray[count].diffusion,
+                   &pArray[count].hueAngle,
+                   &pArray[count].hueShift,
+                   &pArray[count].lightfast1,
+                   &pArray[count].lightfast2) == 12) {
+            printf("Successfully read paint %d\n", count + 1);  
+            count++;
+        } else {
+            printf("Skipping malformed line: %s", line);  // Optional: skip malformed lines
+        }
     }
 
     fclose(file);
 
-    *n = count;  // Set the number of entries found
+    *x = count;  
     printf("Total paints loaded: %d\n", count);  
     return 0;
 }
-

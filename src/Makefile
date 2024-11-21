@@ -14,3 +14,6 @@ test_load.o: test_load.c pigment.h
 
 clean:
 	rm -f *.o test_load
+
+package: 
+	cd ../ && tar -czvf  cmpt201_AMZ_lab09,project_milestone1.tar.gz PROJECT
