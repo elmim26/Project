@@ -133,7 +133,7 @@ int printPigment(pigment_t* pp, int i, int n){
 }
 
 
-//QUESTION4 FUNCTION:
+//QUESTION4 FUNCTION(mohamed):
 paint* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* nspp ){
     
     if (pp == NULL || name == NULL || nspp == NULL || npp <= 0) { //making sure inputs are good
@@ -146,6 +146,10 @@ paint* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* ns
     if (subset == NULL) {
         return NULL; 
     }
+
+     for (int i = 0; i < npp; i++) {
+        int isMatch = 0; //indicate a match
+        
 
 
 
