@@ -39,9 +39,8 @@ int main() {
         return 1;
     }
 
-    printf("Loaded %d paints:\n", x);  // Use x to show the count of loaded paints
+    printf("Loaded %d paints:\n", x);  
 
-    // Loop through the array to display each paint
     for (int i = 0; i < x; i++) {
         printf("Paint %d: CI Name: %s, Marketing Name: %s, Manufacturer: %s, Transparency: %d, Staining: %d, Value Range: %d, Granulating: %d, Blossom: %d, Diffusion: %d, Hue Angle: %d, Hue Shift: %d, Lightfast: %d/%d\n",
             i,
