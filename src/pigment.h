@@ -19,18 +19,19 @@ typedef enum {ciName,marketingName,manufacturer} gValue_t //enumerator for q4
 
 // Definition of paint_t structure
 typedef struct {
-    char ciName[50];            // color index name
-    char marketingName[100];    // marketing
-    char manufacturer[50];      
-    int transparency;           
-    int staining;               
-    int valueRange;             
-    int granulating;           
-    int blossom;            
-    int diffusion;             
-    int hueAngle;               
-    int hueShift;               
-    int lightfast;              
+    char ciName[50];
+    char marketingName[100];
+    char manufacturer[50];
+    int transparency;
+    int staining;
+    int valueRange;
+    int granulating;
+    int blossom;
+    int diffusion;
+    int hueAngle;
+    int hueShift;
+    int lightfast1;  // First part of Lightfastness
+    int lightfast2;  // Second part of Lightfastness
 } paint_t;
 
 // Function prototypes of milestone 1
