@@ -31,8 +31,8 @@ typedef struct {
     int diffusion;
     int hueAngle;
     int hueShift;
-    int lightfast;  
-    
+    int lightfast1;  
+    int lightfast2;  
 } paint_t;
 
 // Function prototypes of milestone 1
