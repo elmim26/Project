@@ -113,6 +113,54 @@ int printPigment(pigment_t* pp, int i, int n){
 }
 
 
+//QUESTION 2 FUNCTION
+int printPaint(paint_t* pp, int i, int n){
+    if (pp == NULL || n <= 0) {
+        return 1; 
+    }
+
+    if (i == -1) { // if index is -1, print the whole array
+        for (int index = 0; index < n; index++) {
+            printf("--------------\n");
+            printf("ciName: %s\n", pp[index].ciName);
+            printf("Marketing Name: %s\n", pp[index].marketingName);
+            printf("Manufacturer: %s\n", pp[index].manufacturer);
+            printf("Transparency: %d\n", pp[index].transparency);
+            printf("Staining: %d\n", pp[index].staining);
+            printf("Value Range: %d\n", pp[index].valueRange);
+            printf("Granulating: %d\n", pp[index].granulating);
+            printf("Blossom: %d\n", pp[index].blossom);
+            printf("Diffusion: %d\n", pp[index].diffusion);
+            printf("Hue Angle [degrees]: %d\n", pp[index].hueAngle);
+            printf("Hue Shift: %d\n", pp[index].hueShift);
+            printf("Lightfastness: %d\n", pp[index].lightfast);
+        }
+    }
+    
+    else if (i >= 0 && i < n) { // a certain paint
+        printf("--------------\n");
+        printf("ciName: %s\n", pp[i].ciName);
+        printf("Marketing Name: %s\n", pp[i].marketingName);
+        printf("Manufacturer: %s\n", pp[i].manufacturer);
+        printf("Transparency: %d\n", pp[i].transparency);
+        printf("Staining: %d\n", pp[i].staining);
+        printf("Value Range: %d\n", pp[i].valueRange);
+        printf("Granulating: %d\n", pp[i].granulating);
+        printf("Blossom: %d\n", pp[i].blossom);
+        printf("Diffusion: %d\n", pp[i].diffusion);
+        printf("Hue Angle [degrees]: %d\n", pp[i].hueAngle);
+        printf("Hue Shift: %d\n", pp[i].hueShift);
+        printf("Lightfastness: %d\n", pp[i].lightfast);
+    } 
+    else {
+        return 1;
+    }
+    return 0;
+
+}
+//END OF QUESTION 2 FUNCTION
+
+
 //QUESTION4 FUNCTION:
 paint_t* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* nspp) {
     int count = 0;
