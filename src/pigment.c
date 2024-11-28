@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Function to load pigment data
+// function to load pigment data
 int loadPigmentData(char* filename, pigment_t* pArray, int* n) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
@@ -16,7 +16,7 @@ int loadPigmentData(char* filename, pigment_t* pArray, int* n) {
     // Skip header lines
     while (fgets(header, sizeof(header), file) && header[0] == '#');
 
-    // Read data from the file
+    // Read data from file
     while (fscanf(file, "%[^,],%[^,],%d,%d,%d,%d,%d,%f,%f,%f",
                   pArray[count].ciName,
                   pArray[count].pigmentName,
@@ -32,7 +32,7 @@ int loadPigmentData(char* filename, pigment_t* pArray, int* n) {
     }
 
     fclose(file);
-    *n = count; // Set number of pigments loaded
+    *n = count; //number of pigments 
     return 0;
 }
 
@@ -47,7 +47,7 @@ int loadPaintData(char* filename, paint_t* pArray, int* n) {
     }
 
     int count = 0;
-    char header[200];
+    char header[500];
 
     // Skip header lines
     while (fgets(header, sizeof(header), file) && header[0] == '#');
@@ -125,13 +125,13 @@ paint_t* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* 
         int match = 0;
         switch (getType) {
             case ciName:
-                match = (strcasecmp(pp[i].ciName, name) == 0);
+                match = (strcmp(pp[i].ciName, name) == 0);
                 break;
             case marketingName:
-                match = (strcasecmp(pp[i].marketingName, name) == 0);
+                match = (strcmp(pp[i].marketingName, name) == 0);
                 break;
             case manufacturer:
-                match = (strcasecmp(pp[i].manufacturer, name) == 0);
+                match = (strcmp(pp[i].manufacturer, name) == 0);
                 break;
         }
 

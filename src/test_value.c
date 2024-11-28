@@ -1,23 +1,23 @@
 #include "pigment.h"
 #include <stdio.h>
 #include <string.h>
-int main() {
-    // Sample paints array and size
+int main(void) {
+    
     paint_t paints[200];
     int npp = 0;
 
-    // Load paint data
+    //load paint data
     if (loadPaintData("paints.dat", paints, &npp) != 0) {
         printf("Failed to load paints data.\n");
         return 1;
     }
 
-    // Specify the search criteria
-    char testName[] = "cerulean blue"; // Replace with your desired marketing name
-    gValue_t testType = marketingName; // Searching by marketing name
+    //searching for testcase
+    char testName[] = "cerulean blue"; 
+    gValue_t testType = marketingName; 
     int nspp = 0;
 
-    // Get subset of paints matching criteria
+    // get subset of paints matching 
     paint_t *subset = getPaintValue(paints, npp, testName, testType, &nspp);
 
     // Check if subset is found
@@ -26,7 +26,7 @@ int main() {
     } else {
         printf("Found %d matches for '%s':\n", nspp, testName);
 
-        // Print matching paints
+        // then print matching paints
         for (int i = 0; i < nspp; i++) {
             printf("Paint %d:\n", i + 1);
             printf("  CI Name: %s\n", subset[i].ciName);
@@ -45,9 +45,9 @@ int main() {
         }
     }
 
-    // Free dynamically allocated memory
+    // Free memory
     free(subset);
 
     return 0;
 }
-
+//wednesday work
