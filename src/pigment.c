@@ -43,31 +43,42 @@ int loadPigmentData(char* filename, pigment_t* pArray, int* n) {
 int loadPaintData(char* filename, paint_t* pArray, int* n) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        return 1; // File could not be opened
+        printf("Error: Could not open file %s\n", filename);
+        return 1;  // Return 1 if file can't be opened
     }
 
     int count = 0;
     char header[500];
 
     // Skip header lines
-    while (fgets(header, sizeof(header), file) && header[0] == '#');
-
-    // Read data from the file
-    while (fscanf(file, "%[^,],%[^,],%[^,],%d,%d,%d,%d,%d,%d,%d,%d,%d",
-                  pArray[count].ciName,
-                  pArray[count].marketingName,
-                  pArray[count].manufacturer,
-                  &pArray[count].transparency,
-                  &pArray[count].staining,
-                  &pArray[count].valueRange,
-                  &pArray[count].granulating,
-                  &pArray[count].blossom,
-                  &pArray[count].diffusion,
-                  &pArray[count].hueAngle,
-                  &pArray[count].hueShift,
-                  &pArray[count].lightfast) == 12) {
-        count++;
+    char header[200];
+    while (fgets(header, sizeof(header), file) && header[0] == '#') {
+        printf("Skipping header: %s", header);  
     }
+
+    // Read data lines 
+    char line[200];
+    while (fgets(line, sizeof(line), file)) {
+        // Parse the line using sscanf, matching the expected format
+        if (sscanf(line, "%49[^,],%99[^,],%49[^,],%d,%d,%d,%d,%d,%d,%d,%d,%d/%d",
+                   pArray[count].ciName,
+                   pArray[count].marketingName,
+                   pArray[count].manufacturer,
+                   &pArray[count].transparency,
+                   &pArray[count].staining,
+                   &pArray[count].valueRange,
+                   &pArray[count].granulating,
+                   &pArray[count].blossom,
+                   &pArray[count].diffusion,
+                   &pArray[count].hueAngle,
+                   &pArray[count].hueShift,
+                   &pArray[count].lightfast1,
+                   &pArray[count].lightfast2) == 12) {
+            printf("Successfully read paint %d\n", count + 1);  
+            count++;
+        }
+    }
+
 
     fclose(file);
     *n = count; // Set number of paints loaded
@@ -111,6 +122,173 @@ int printPigment(pigment_t* pp, int i, int n){
     }
     return 0;
 }
+
+
+//QUESTION 2 FUNCTION
+int printPaint(paint_t* pp, int i, int n){
+    if (pp == NULL || n <= 0) {
+        return 1; 
+    }
+
+    if (i == -1) { // if index is -1, print the whole array
+        for (int index = 0; index < n; index++) {
+            printf("--------------\n");
+            printf("ciName: %s\n", pp[index].ciName);
+            printf("Marketing Name: %s\n", pp[index].marketingName);
+            printf("Manufacturer: %s\n", pp[index].manufacturer);
+            printf("Transparency: %d\n", pp[index].transparency);
+            printf("Staining: %d\n", pp[index].staining);
+            printf("Value Range: %d\n", pp[index].valueRange);
+            printf("Granulating: %d\n", pp[index].granulating);
+            printf("Blossom: %d\n", pp[index].blossom);
+            printf("Diffusion: %d\n", pp[index].diffusion);
+            printf("Hue Angle [degrees]: %d\n", pp[index].hueAngle);
+            printf("Hue Shift: %d\n", pp[index].hueShift);
+            printf("Lightfastness: %d/%d\n", pp[index].lightfast1, pp[index].lightfast2);
+        }
+    }
+    
+    else if (i >= 0 && i < n) { // a certain paint
+        printf("--------------\n");
+        printf("ciName: %s\n", pp[i].ciName);
+        printf("Marketing Name: %s\n", pp[i].marketingName);
+        printf("Manufacturer: %s\n", pp[i].manufacturer);
+        printf("Transparency: %d\n", pp[i].transparency);
+        printf("Staining: %d\n", pp[i].staining);
+        printf("Value Range: %d\n", pp[i].valueRange);
+        printf("Granulating: %d\n", pp[i].granulating);
+        printf("Blossom: %d\n", pp[i].blossom);
+        printf("Diffusion: %d\n", pp[i].diffusion);
+        printf("Hue Angle [degrees]: %d\n", pp[i].hueAngle);
+        printf("Hue Shift: %d\n", pp[i].hueShift);
+        printf("Lightfastness: %d/%d\n", pp[i].lightfast1, pp[i].lightfast2);
+    } 
+    else {
+        return 1;
+    }
+    return 0;
+
+}
+//END OF QUESTION 2 FUNCTION
+
+
+//QUESTION 3 MILESTONE 2
+
+paint_t* getPaintRange(paint_t* pp, int npp, float rmin, float rmax, gRange_t getType, int* nspp) {
+    // Check if pp is NULL or invalid range
+    if (pp == NULL || rmin < 0.0 || rmax > 1.0 || rmin > rmax) {
+        *nspp = 0;
+        return NULL;
+    }
+
+    float minRange, maxRange;
+    switch (getType) {
+        case HUE:
+            minRange = rmin * 359.0f;  //0 to 359
+            maxRange = rmax * 359.0f;
+            break;
+        case VALUE:
+            minRange = rmin * 100.0f;  //0 to 100
+            maxRange = rmax * 100.0f;
+            break;
+        case GRANULATING:
+            minRange = rmin * 4.0f;    //0 to 4
+            maxRange = rmax * 4.0f;
+            break;
+        case TRANSPARENT:
+            minRange = rmin * 4.0f; //0 to 4
+            maxRange = rmax * 4.0f;
+            break;
+        case STAINING:
+            minRange = rmin * 4.0f; //0 to 4
+            maxRange = rmax * 4.0f;
+            break;
+        case BLOOM:
+            minRange = rmin * 4.0f;  //0 to 4
+            maxRange = rmax * 4.0f;
+            break;
+        case LIGHTFAST:
+            minRange = rmin * 10.0f;  //0 to 10
+            maxRange = rmax * 10.0f;
+            break;
+        default:
+            *nspp = 0;
+            return NULL;  // Invalid
+    }
+    paint_t* result = (paint_t*)malloc(npp * sizeof(paint_t));
+    if (result == NULL) {
+        *nspp = 0;
+        return NULL;
+    }
+
+    int count = 0;
+    for (int i = 0; i < npp; i++) {
+        float propertyValue = 0.0f;
+
+        switch (getType) {
+            case HUE:
+                propertyValue = pp[i].hueAngle;
+                break;
+            case VALUE:
+                propertyValue = pp[i].valueRange;
+                break;
+            case GRANULATING:
+                propertyValue = pp[i].granulating;
+                break;
+            case TRANSPARENT:
+                propertyValue = pp[i].transparency;
+                break;
+            case STAINING:
+                propertyValue = pp[i].staining;
+                break;
+            case BLOOM:
+                propertyValue = pp[i].blossom;
+                break;
+            case LIGHTFAST:
+                propertyValue = (pp[i].lightfast1 + pp[i].lightfast2)/2;
+                break;
+        }
+
+        // range check & incramwntation
+        if (propertyValue >= minRange && propertyValue <= maxRange) {
+            result[count] = pp[i];  
+            count++;
+        }
+    }
+    result = (paint_t*)realloc(result, count * sizeof(paint_t));
+    *nspp = count;
+    return result;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //QUESTION4 FUNCTION:
