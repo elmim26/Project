@@ -7,44 +7,35 @@
 int loadPigmentData(char* filename, pigment_t* pArray, int* n) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        printf("Error: Could not open file %s\n", filename);
-        return 1;  
+        return 1; // File could not be opened
     }
 
     int count = 0;
+    char header[200];
 
     // Skip header lines
-    char line[200];
-    while (fgets(line, sizeof(line), file) && line[0] == '#') {
-        // Skip header lines 
-    }
+    while (fgets(header, sizeof(header), file) && header[0] == '#');
 
-    // Read data lines
-    while (fgets(line, sizeof(line), file)) {
-        
-        if (sscanf(line, "%49[^,],%49[^,],%d,%d,%d,%d,%d,%f,%f,%f",
-                   pArray[count].ciName,
-                   pArray[count].pigmentName,
-                   &pArray[count].value,
-                   &pArray[count].chroma,
-                   &pArray[count].abValue[0],
-                   &pArray[count].abValue[1],
-                   &pArray[count].hueAngle,
-                   &pArray[count].huePurity,
-                   &pArray[count].abHp[0],
-                   &pArray[count].abHp[1]) == 10) {
-            
-            count++;
-        } else {
-            
-        }
+    // Read data from the file
+    while (fscanf(file, "%[^,],%[^,],%d,%d,%d,%d,%d,%f,%f,%f",
+                  pArray[count].ciName,
+                  pArray[count].pigmentName,
+                  &pArray[count].value,
+                  &pArray[count].chroma,
+                  &pArray[count].abValue[0],
+                  &pArray[count].abValue[1],
+                  &pArray[count].hueAngle,
+                  &pArray[count].huePurity,
+                  &pArray[count].abHp[0],
+                  &pArray[count].abHp[1]) == 10) {
+        count++;
     }
 
     fclose(file);
-
-    *n = count;  // set the total number of entries found
+    *n = count; // Set number of pigments loaded
     return 0;
 }
+
 
 
 
@@ -52,49 +43,38 @@ int loadPigmentData(char* filename, pigment_t* pArray, int* n) {
 int loadPaintData(char* filename, paint_t* pArray, int* n) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
-        printf("Error: Could not open file %s\n", filename);
-        return 1; 
+        return 1; // File could not be opened
     }
 
     int count = 0;
+    char header[200];
 
     // Skip header lines
-    char header[200];
-    while (fgets(header, sizeof(header), file) && header[0] == '#') {
-        printf("Skipping header: %s", header);  
-    }
+    while (fgets(header, sizeof(header), file) && header[0] == '#');
 
-    // Read data lines 
-    char line[200];
-    while (fgets(line, sizeof(line), file)) {
-        // Parse the line using sscanf, matching the expected format
-        if (sscanf(line, "%49[^,],%99[^,],%49[^,],%d,%d,%d,%d,%d,%d,%d,%d,%d/%d",
-                   pArray[count].ciName,
-                   pArray[count].marketingName,
-                   pArray[count].manufacturer,
-                   &pArray[count].transparency,
-                   &pArray[count].staining,
-                   &pArray[count].valueRange,
-                   &pArray[count].granulating,
-                   &pArray[count].blossom,
-                   &pArray[count].diffusion,
-                   &pArray[count].hueAngle,
-                   &pArray[count].hueShift,
-                   &pArray[count].lightfast1,
-                   &pArray[count].lightfast2) == 12) {
-            printf("Successfully read paint %d\n", count + 1);  
-            count++;
-        } else {
-            printf("Skipping malformed line: %s", line);  // Optional: skip malformed lines
-        }
+    // Read data from the file
+    while (fscanf(file, "%[^,],%[^,],%[^,],%d,%d,%d,%d,%d,%d,%d,%d,%d",
+                  pArray[count].ciName,
+                  pArray[count].marketingName,
+                  pArray[count].manufacturer,
+                  &pArray[count].transparency,
+                  &pArray[count].staining,
+                  &pArray[count].valueRange,
+                  &pArray[count].granulating,
+                  &pArray[count].blossom,
+                  &pArray[count].diffusion,
+                  &pArray[count].hueAngle,
+                  &pArray[count].hueShift,
+                  &pArray[count].lightfast) == 12) {
+        count++;
     }
 
     fclose(file);
-
-    *x = count;  
-    printf("Total paints loaded: %d\n", count);  
+    *n = count; // Set number of paints loaded
     return 0;
 }
+
+
 
 //QUESTION1 OF MILESTONE2
 int printPigment(pigment_t* pp, int i, int n){
@@ -133,22 +113,43 @@ int printPigment(pigment_t* pp, int i, int n){
 }
 
 
-//QUESTION4 FUNCTION(mohamed):
-paint* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* nspp ){
-    
-    if (pp == NULL || name == NULL || nspp == NULL || npp <= 0) { //making sure inputs are good
-        return NULL; 
-    }
-    *nspp = 0; //count of subset paints
-
-    
-    paint_t* subset = malloc(npp * sizeof(paint_t)); //allocating memory
-    if (subset == NULL) {
-        return NULL; 
+//QUESTION4 FUNCTION:
+paint_t* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* nspp) {
+    int count = 0;
+    paint_t* subset = malloc(npp * sizeof(paint_t));
+    if (!subset) {
+        return NULL; // Memory allocation failed
     }
 
-     for (int i = 0; i < npp; i++) {
-        int isMatch = 0; //indicate a match
+    for (int i = 0; i < npp; i++) {
+        int match = 0;
+        switch (getType) {
+            case ciName:
+                match = (strcasecmp(pp[i].ciName, name) == 0);
+                break;
+            case marketingName:
+                match = (strcasecmp(pp[i].marketingName, name) == 0);
+                break;
+            case manufacturer:
+                match = (strcasecmp(pp[i].manufacturer, name) == 0);
+                break;
+        }
+
+        if (match) {
+            subset[count++] = pp[i];
+        }
+    }
+
+    *nspp = count; // Update the number of matching paints
+
+    if (count == 0) {
+        free(subset); // No matches found
+        return NULL;
+    }
+
+    return subset; // Return the filtered subset
+}
+
         
 
 
@@ -158,4 +159,3 @@ paint* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* ns
 
 
 
-}

@@ -14,7 +14,8 @@ typedef struct {
     float abHp[2];         // aHP and bHP values
 } pigment_t;
 
-typedef enum {ciName,marketingName,manufacturer} gValue_t //enumerator for q4
+typedef enum {ciName,marketingName,manufacturer} gValue_t; //enumerator for q4
+
 
 
 // Definition of paint_t structure
@@ -30,8 +31,8 @@ typedef struct {
     int diffusion;
     int hueAngle;
     int hueShift;
-    int lightfast1;  // First part of Lightfastness
-    int lightfast2;  // Second part of Lightfastness
+    int lightfast;  
+    
 } paint_t;
 
 // Function prototypes of milestone 1
@@ -42,7 +43,7 @@ int loadPaintData(char* filename, paint_t* pArray, int* n);
 
 //prototypes for milestone 2
 int printPigment(pigment_t* pp, int i, int n); //q1
-paint* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* nspp ) //q4
+paint_t* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* nspp ); //q4
 
 
 
