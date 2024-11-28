@@ -45,6 +45,23 @@ typedef enum {
     LIGHTFAST
 } gRange_t;
 
+
+//enumeration for colour_t
+typedef enum {
+    RED,
+    RED_ORANGE,
+    ORANGE,
+    YELLOW_ORANGE,
+    YELLOW,
+    YELLOW_GREEN,
+    GREEN,
+    BLUE_GREEN,
+    BLUE,
+    BLUE_VIOLET,
+    VIOLET,
+    RED_VIOLET
+} colour_t;
+
 // Function prototypes of milestone 1
 int loadPigmentData(char* filename, pigment_t* pArray, int* n);
 int loadPaintData(char* filename, paint_t* pArray, int* n);
@@ -56,6 +73,8 @@ int printPigment(pigment_t* pp, int i, int n); //q1
 paint_t* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* nspp ); //q4
 
 
+//prototypes for milestone 3
+paint_t* getPaintHue(paint_t* pp, int* n, colour_t colour); //q1
 
 
 
