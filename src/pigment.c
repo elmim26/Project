@@ -171,6 +171,125 @@ int printPaint(paint_t* pp, int i, int n){
 //END OF QUESTION 2 FUNCTION
 
 
+//QUESTION 3 MILESTONE 2
+
+paint_t* getPaintRange(paint_t* pp, int npp, float rmin, float rmax, gRange_t getType, int* nspp) {
+    // Check if pp is NULL or invalid range
+    if (pp == NULL || rmin < 0.0 || rmax > 1.0 || rmin > rmax) {
+        *nspp = 0;
+        return NULL;
+    }
+
+    float minRange, maxRange;
+    switch (getType) {
+        case HUE:
+            minRange = rmin * 359.0f;  //0 to 359
+            maxRange = rmax * 359.0f;
+            break;
+        case VALUE:
+            minRange = rmin * 100.0f;  //0 to 100
+            maxRange = rmax * 100.0f;
+            break;
+        case GRANULATING:
+            minRange = rmin * 4.0f;    //0 to 4
+            maxRange = rmax * 4.0f;
+            break;
+        case TRANSPARENT:
+            minRange = rmin * 4.0f; //0 to 4
+            maxRange = rmax * 4.0f;
+            break;
+        case STAINING:
+            minRange = rmin * 4.0f; //0 to 4
+            maxRange = rmax * 4.0f;
+            break;
+        case BLOOM:
+            minRange = rmin * 4.0f;  //0 to 4
+            maxRange = rmax * 4.0f;
+            break;
+        case LIGHTFAST:
+            minRange = rmin * 10.0f;  //0 to 10
+            maxRange = rmax * 10.0f;
+            break;
+        default:
+            *nspp = 0;
+            return NULL;  // Invalid
+    }
+    paint_t* result = (paint_t*)malloc(npp * sizeof(paint_t));
+    if (result == NULL) {
+        *nspp = 0;
+        return NULL;
+    }
+
+    int count = 0;
+    for (int i = 0; i < npp; i++) {
+        float propertyValue = 0.0f;
+
+        switch (getType) {
+            case HUE:
+                propertyValue = pp[i].hueAngle;
+                break;
+            case VALUE:
+                propertyValue = pp[i].valueRange;
+                break;
+            case GRANULATING:
+                propertyValue = pp[i].granulating;
+                break;
+            case TRANSPARENT:
+                propertyValue = pp[i].transparency;
+                break;
+            case STAINING:
+                propertyValue = pp[i].staining;
+                break;
+            case BLOOM:
+                propertyValue = pp[i].blossom;
+                break;
+            case LIGHTFAST:
+                propertyValue = (pp[i].lightfast1 + pp[i].lightfast2)/2;
+                break;
+        }
+
+        // range check & incramwntation
+        if (propertyValue >= minRange && propertyValue <= maxRange) {
+            result[count] = pp[i];  
+            count++;
+        }
+    }
+    result = (paint_t*)realloc(result, count * sizeof(paint_t));
+    *nspp = count;
+    return result;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //QUESTION4 FUNCTION:
 paint_t* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* nspp) {
     int count = 0;

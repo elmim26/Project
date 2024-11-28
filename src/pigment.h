@@ -35,6 +35,16 @@ typedef struct {
     int lightfast2;  
 } paint_t;
 
+typedef enum {
+    HUE,
+    VALUE,
+    GRANULATING,
+    TRANSPARENT,
+    STAINING,
+    BLOOM,
+    LIGHTFAST
+} gRange_t;
+
 // Function prototypes of milestone 1
 int loadPigmentData(char* filename, pigment_t* pArray, int* n);
 int loadPaintData(char* filename, paint_t* pArray, int* n);
