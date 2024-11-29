@@ -53,6 +53,8 @@ int loadPaintData(char* filename, paint_t* pArray, int* n);
 
 //prototypes for milestone 2
 int printPigment(pigment_t* pp, int i, int n); //q1
+int printPaint(paint_t* pp, int i, int n);
+paint_t* getPaintRange(paint_t* pp, int npp, float rmin, float rmax, gRange_t getType, int* nspp);
 paint_t* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* nspp ); //q4
 
 

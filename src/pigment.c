@@ -51,7 +51,6 @@ int loadPaintData(char* filename, paint_t* pArray, int* n) {
     char header[500];
 
     // Skip header lines
-    char header[200];
     while (fgets(header, sizeof(header), file) && header[0] == '#') {
         printf("Skipping header: %s", header);  
     }
@@ -73,8 +72,7 @@ int loadPaintData(char* filename, paint_t* pArray, int* n) {
                    &pArray[count].hueAngle,
                    &pArray[count].hueShift,
                    &pArray[count].lightfast1,
-                   &pArray[count].lightfast2) == 12) {
-            printf("Successfully read paint %d\n", count + 1);  
+                   &pArray[count].lightfast2) == 12) { 
             count++;
         }
     }
@@ -175,7 +173,6 @@ int printPaint(paint_t* pp, int i, int n){
 //QUESTION 3 MILESTONE 2
 
 paint_t* getPaintRange(paint_t* pp, int npp, float rmin, float rmax, gRange_t getType, int* nspp) {
-    // Check if pp is NULL or invalid range
     if (pp == NULL || rmin < 0.0 || rmax > 1.0 || rmin > rmax) {
         *nspp = 0;
         return NULL;
@@ -259,23 +256,6 @@ paint_t* getPaintRange(paint_t* pp, int npp, float rmin, float rmax, gRange_t ge
     *nspp = count;
     return result;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

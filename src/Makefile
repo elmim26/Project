@@ -2,7 +2,7 @@ CC := gcc
 CFLAGS := -Wall
 
 test_range: pigment.o test_range.o
-	$(CC) -o test_load pigment.o test_range.o
+	$(CC) -o test_range pigment.o test_range.o
 test_print: pigment.o test_print.o
 
 test_value: pigment.o test_value.o
