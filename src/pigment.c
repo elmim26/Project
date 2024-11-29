@@ -177,7 +177,7 @@ paint_t* getPaintRange(paint_t* pp, int npp, float rmin, float rmax, gRange_t ge
         *nspp = 0;
         return NULL;
     }
-
+    //convert the range to fit the given getType val
     float minRange, maxRange;
     switch (getType) {
         case HUE:
@@ -212,8 +212,8 @@ paint_t* getPaintRange(paint_t* pp, int npp, float rmin, float rmax, gRange_t ge
             *nspp = 0;
             return NULL;  // Invalid
     }
-    paint_t* result = (paint_t*)malloc(npp * sizeof(paint_t));
-    if (result == NULL) {
+    paint_t* subarr = (paint_t*)malloc(npp * sizeof(paint_t)); //make the subarr array with initialized size of paint_t
+    if (subarr == NULL) {
         *nspp = 0;
         return NULL;
     }
@@ -245,28 +245,17 @@ paint_t* getPaintRange(paint_t* pp, int npp, float rmin, float rmax, gRange_t ge
                 propertyValue = (pp[i].lightfast1 + pp[i].lightfast2)/2;
                 break;
         }
-
         // range check & incramwntation
         if (propertyValue >= minRange && propertyValue <= maxRange) {
-            result[count] = pp[i];  
+            subarr[count] = pp[i];  //if condition true, subarr val at count = arr val at count
             count++;
         }
     }
-    result = (paint_t*)realloc(result, count * sizeof(paint_t));
+    //return subarr as subarray
+    subarr = (paint_t*)realloc(subarr, count * sizeof(paint_t));
     *nspp = count;
-    return result;
+    return subarr;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
