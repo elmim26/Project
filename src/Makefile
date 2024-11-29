@@ -18,3 +18,6 @@ test_load.o: test_load.c pigment.h
 
 clean:
 	rm -f *.o test_load test_print
+
+package:
+	cd ../ && tar -czvf cmpt201_AMZ_ME_lab10,project_milestone2.tar.gz src
