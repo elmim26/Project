@@ -297,7 +297,7 @@ paint_t* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* 
     return subset; // Return the filtered subset
 }
 
-/*
+
 //question1 for milestone3
 // Helper function to check if hue angle falls within the range of a specific colour
 int isHueInRange(int hue, colour_t colour) {
@@ -405,12 +405,3 @@ paint_t* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* 
 
     return subset; // Return the filtered subset
 }
-*/
-
-
-
-
-
-
-
-
