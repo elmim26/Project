@@ -13,7 +13,7 @@ int main(){
     }
 
     //declare vars for paintRange
-    float rmin = 0.5f;
+    float rmin = 0.0f;
     float rmax = 1.0f;
     gRange_t rangeType = GRANULATING;
     int nspp = 0;
