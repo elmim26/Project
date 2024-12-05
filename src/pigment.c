@@ -40,7 +40,6 @@ int loadPigmentData(char* filename, pigment_t* pArray, int* n) {
 
 
 // function to load paint data
-
 int loadPaintData(char* filename, paint_t* pArray, int* n) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
@@ -49,18 +48,18 @@ int loadPaintData(char* filename, paint_t* pArray, int* n) {
     }
 
     int count = 0;
+    char header[500];
 
     // Skip header lines
     while (fgets(header, sizeof(header), file) && header[0] == '#') {
         printf("Skipping header: %s", header);  
-    char line[500];
-    while (fgets(line, sizeof(line), file) && line[0] == '#') {
-        // Skip header
     }
 
-    // Read data lines
+    // Read data lines 
+    char line[200];
     while (fgets(line, sizeof(line), file)) {
-        if (sscanf(line, "%49[^,],%99[^,],%49[^,],%d,%d,%d,%d,%d,%d,%d,%d,%d",
+        // Parse the line using sscanf, matching the expected format
+        if (sscanf(line, "%49[^,],%99[^,],%49[^,],%d,%d,%d,%d,%d,%d,%d,%d,%d/%d",
                    pArray[count].ciName,
                    pArray[count].marketingName,
                    pArray[count].manufacturer,
@@ -74,12 +73,15 @@ int loadPaintData(char* filename, paint_t* pArray, int* n) {
                    &pArray[count].hueShift,
                    &pArray[count].lightfast1,
                    &pArray[count].lightfast2) == 12) { 
-                   &pArray[count].lightfast) == 12) {
-            printf("Successfully read paint %d: CI Name: %s, Hue Angle: %d\n", 
-                   count + 1, pArray[count].ciName, pArray[count].hueAngle);
             count++;
-        } else {
-            printf("Warning: Failed to parse line: %s", line);
+        }
+    }
+
+
+    fclose(file);
+    *n = count; // Set number of paints loaded
+    return 0;
+}
 
 
 
@@ -256,6 +258,46 @@ paint_t* getPaintRange(paint_t* pp, int npp, float rmin, float rmax, gRange_t ge
 }
 
 
+
+
+//QUESTION4 FUNCTION:
+paint_t* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* nspp) {
+    int count = 0;
+    paint_t* subset = malloc(npp * sizeof(paint_t));
+    if (!subset) {
+        return NULL; // Memory allocation failed
+    }
+
+    for (int i = 0; i < npp; i++) {
+        int match = 0;
+        switch (getType) {
+            case ciName:
+                match = (strcmp(pp[i].ciName, name) == 0);
+                break;
+            case marketingName:
+                match = (strcmp(pp[i].marketingName, name) == 0);
+                break;
+            case manufacturer:
+                match = (strcmp(pp[i].manufacturer, name) == 0);
+                break;
+        }
+
+        if (match) {
+            subset[count++] = pp[i];
+        }
+    }
+
+    *nspp = count; // Update the number of matching paints
+
+    if (count == 0) {
+        free(subset); // No matches found
+        return NULL;
+    }
+
+    return subset; // Return the filtered subset
+}
+
+/*
 //question1 for milestone3
 // Helper function to check if hue angle falls within the range of a specific colour
 int isHueInRange(int hue, colour_t colour) {
@@ -363,7 +405,7 @@ paint_t* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* 
 
     return subset; // Return the filtered subset
 }
-        
+*/
 
 
 
