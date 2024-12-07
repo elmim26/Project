@@ -332,37 +332,50 @@ int isHueInRange(int hue, colour_t colour) {
     }
 }
 
-// Function to retrieve paints based on hue
+//MILESTONE3 Q1
+
 paint_t* getPaintHue(paint_t* pp, int* n, colour_t colour) {
-    if (!pp || !n || *n <= 0) {
-        printf("Error: Invalid input data.\n");
-        return NULL; 
-    }
-    
-    int count = 0; // Matching paint count
-    paint_t* subset = malloc(*n * sizeof(paint_t)); 
-
-    if (subset == NULL) {
-        printf("Error: Memory allocation failed.\n");
-        return NULL; 
+    if (pp == NULL || n == NULL || *n <= 0) {
+        return NULL; // Invalid input
     }
 
-    // Iterate through paints to find matches
+    // my own hue angle ranges for each colou
+    int hue_min, hue_max;
+    switch (colour) {
+        case RED: hue_min = 350; hue_max = 360; break;
+        case RED_ORANGE: hue_min = 20; hue_max = 30; break;
+        case ORANGE: hue_min = 30; hue_max = 50; break;
+        case YELLOW_ORANGE: hue_min = 50; hue_max = 60; break;
+        case YELLOW: hue_min = 60; hue_max = 90; break;
+        case YELLOW_GREEN: hue_min = 90; hue_max = 140; break;
+        case GREEN: hue_min = 120; hue_max = 180; break;
+        case BLUE_GREEN: hue_min = 180; hue_max = 220; break;
+        case BLUE: hue_min = 210; hue_max = 250; break;
+        case BLUE_VIOLET: hue_min = 260; hue_max = 300; break;
+        case VIOLET: hue_min = 300; hue_max = 320; break;
+        case RED_VIOLET: hue_min = 320; hue_max = 350; break;
+        default: return NULL; // Invalid color
+    }
+
+    // Allocate memory for paints
+    paint_t* pps = malloc(sizeof(paint_t) * (*n));
+    if (pps == NULL) {
+        return NULL; // Memory allocation failed
+    }
+
+    int count = 0;
     for (int i = 0; i < *n; i++) {
-        if (isHueInRange(pp[i].hueAngle, colour)) {
-            printf("Match found: %s with Hue Angle: %d for color GREEN\n", 
-                   pp[i].marketingName, pp[i].hueAngle);
-            subset[count++] = pp[i]; // Add matching paint to subset
+        if (pp[i].hueAngle >= hue_min && pp[i].hueAngle <= hue_max) {
+            pps[count++] = pp[i];
         }
     }
 
     if (count == 0) {
-        //printf("No paints found for the specified color.\n");
-        free(subset); // Free memory if no matches found
-        *n = 0;
-        return NULL;
+        free(pps);
+        return NULL; // No matching paints
     }
 
-    *n = count; // Update size of the subset
-    return subset; 
+    // Update the size of the returned array
+    *n = count;
+    return pps;
 }

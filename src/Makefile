@@ -7,6 +7,9 @@ test_range: pigment.o test_range.o
 	$(CC) -o test_range pigment.o test_range.o
 	$(CC) -o test_range pigment.o test_range.o
 
+paintProgram: pigment.o paintProgram.o
+	$(CC) $(CFLAGS) -o paintProgram pigment.o paintProgram.o
+
 test_print: pigment.o test_print.o
 	$(CC) -o test_print pigment.o test_print.o
 
@@ -35,7 +38,7 @@ test_color.o: test_color.c pigment.h
 	$(CC) $(CFLAGS) -c test_color.c
 
 clean:
-	rm -f *.o test_load test_print
+	rm -f *.o test_range paintProgram test_print test_value test_color test_load
 
 package:
 	cd ../ && tar -czvf cmpt201_AMZ_ME_lab10,project_milestone2.tar.gz src
