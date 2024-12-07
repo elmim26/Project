@@ -2,6 +2,7 @@
 #define PIGMENT_H
 #include <stdlib.h>
 
+
 // Definition of pigment_t structure
 typedef struct {
     char ciName[50];       // COLOR INDEX
@@ -62,6 +63,7 @@ typedef enum {
     VIOLET,
     RED_VIOLET
 } colour_t;
+
 
 // Function prototypes of milestone 1
 int loadPigmentData(char* filename, pigment_t* pArray, int* n);

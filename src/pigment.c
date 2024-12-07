@@ -379,3 +379,23 @@ paint_t* getPaintHue(paint_t* pp, int* n, colour_t colour) {
     *n = count;
     return pps;
 }
+
+//question 2 MS3
+paint_t* pps getPalette(paint_t** pp, int* n, type*, properties*){
+        if (pp == NULL || n == NULL || *n <= 0) {
+        return NULL; // Invalid input
+    }
+    //max chroma, granulating/non-granulating, transparent
+    //if max chroma idk, if granulating or non-granulating, anything 1 to 4 or anything 0, use getPaintRange, if transparent, getPaintRange for transparent 4. 
+    //set a properties switch case, if null, skip, if non-grandulating, set get as 0 etc.
+    //if properties NULL skip
+    //after getting the getPaintRange subarray, use that subset in each case to find the properties, else, use normal paint_t array
+    //for the full, triad, complimentary, or split complimentary, use getPaintHue to get those colors. 
+    //idk if its asking to find colors compatible or if its asking to only use those 12 colors.
+    // if it is only asking for those 12 colors, then make a struct containing the 12 colors then do the math, at tryad skip 6 etc.
+    switch (type){
+        
+        case full:
+            if(properties != NULL){}
+    }
+}
