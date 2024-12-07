@@ -42,11 +42,12 @@ int main() {
     printf("Loaded %d paints:\n", x);  
 
     for (int i = 0; i < x; i++) {
-        printf("Paint %d: CI Name: %s, Marketing Name: %s, Manufacturer: %s, Transparency: %d, Staining: %d, Value Range: %d, Granulating: %d, Blossom: %d, Diffusion: %d, Hue Angle: %d, Hue Shift: %d, Lightfast: %d/%d\n",
+        printf("Paint %d: CI Name: %s, Marketing Name: %s, Manufacturer: %s, code: %d, Transparency: %d, Staining: %d, Value Range: %d, Granulating: %d, Blossom: %d, Diffusion: %d, Hue Angle: %d, Hue Shift: %d, Lightfast: %d/%d\n",
             i,
             paints[i].ciName,
             paints[i].marketingName,
             paints[i].manufacturer,
+            paints[i].code,
             paints[i].transparency,
             paints[i].staining,
             paints[i].valueRange,

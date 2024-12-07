@@ -59,10 +59,11 @@ int loadPaintData(char* filename, paint_t* pArray, int* n) {
     char line[200];
     while (fgets(line, sizeof(line), file)) {
         // Parse the line using sscanf, matching the expected format
-        if (sscanf(line, "%49[^,],%99[^,],%49[^,],%d,%d,%d,%d,%d,%d,%d,%d,%d/%d",
+        if (sscanf(line,"%49[^,],%99[^,],%49[^,],%d,%d,%d,%d,%d,%d,%d,%d,%d,%d/%d",
                    pArray[count].ciName,
                    pArray[count].marketingName,
                    pArray[count].manufacturer,
+                   &pArray[count].code,
                    &pArray[count].transparency,
                    &pArray[count].staining,
                    &pArray[count].valueRange,
@@ -72,7 +73,7 @@ int loadPaintData(char* filename, paint_t* pArray, int* n) {
                    &pArray[count].hueAngle,
                    &pArray[count].hueShift,
                    &pArray[count].lightfast1,
-                   &pArray[count].lightfast2) == 12) { 
+                   &pArray[count].lightfast2) == 14) { 
             count++;
         }
     }

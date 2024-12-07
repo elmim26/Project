@@ -23,10 +23,11 @@ typedef struct {
     char ciName[50];
     char marketingName[100];
     char manufacturer[50];
+    int code;
     int transparency;
     int staining;
     int valueRange;
-    int granulating;
+    int granulating; 
     int blossom;
     int diffusion;
     int hueAngle;
