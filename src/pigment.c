@@ -50,11 +50,11 @@ int loadPaintData(char* filename, paint_t* pArray, int* n) {
     int count = 0;
     char header[500];
 
-    // Skip header lines
+    /* Skip header lines
     while (fgets(header, sizeof(header), file) && header[0] == '#') {
         printf("Skipping header: %s", header);  
     }
-
+    */
     // Read data lines 
     char line[200];
     while (fgets(line, sizeof(line), file)) {
@@ -381,42 +381,41 @@ paint_t* getPaintHue(paint_t* pp, int* n, colour_t colour) {
 }
 
 //question 2 MS3
-paint_t* getPalette(paint_t** pp, int* n, const char* type, const char* properties){
-        if (pp == NULL || n == NULL || *n <= 0) {
-        return NULL; // Invalid input
+paint_t* getPalette(paint_t** pp, int* n, const char* type, const char* properties) {
+    if (pp == NULL || n == NULL || *n <= 0) {
+        return NULL;
     }
-    int palletePos = 12;
-    int currentPos = 0; //counter to iterate and grab each pallete point
-    const char* getColourName(colour_t colour) {
-        const char* names[] = {
-            "yellow", "yellow-Orange", "Orange", "red-Orange", "red",
-            "red-Violet", "violet", "blue-Violet", "Blue", "blue-Green",
-            "green", "yellow-Green"
+
+    paint_t* palette = malloc(12 * sizeof(paint_t)); 
+    if (palette == NULL) {
+        printf("Memory allocation failed.\n");
+        return NULL;
+    }
+
+    paint_t* filteredPaints = *pp; 
+    int filteredCount = *n;
+
+
+        const char* colorNames[] = {
+            "yellow", "yellow-orange", "orange", "red-orange", "red",
+            "red-violet", "violet", "blue-violet", "blue", "blue-green",
+            "green", "yellow-green"
         };
-        return names[colour];
-    }
-    paint_t paints[800]; 
-    int x = 800; 
-    int res = loadPaintData("paints.dat", paints, &x);
-    if (res != 0) {
+    
+
+    paint_t paints[800];
+    int paintCount = 800;
+    if (loadPaintData("paints.dat", paints, &paintCount) != 0) {
         printf("Failed to load paint data.\n");
-        return EXIT_FAILURE;
+        return NULL;
     }
-    //max chroma, granulating/non-granulating, transparent
-    //if max chroma idk, if granulating or non-granulating, anything 1 to 4 or anything 0, use getPaintRange, if transparent, getPaintRange for transparent 4. 
-    //set a properties switch case, if null, skip, if non-grandulating, set get as 0 etc.
-    //if properties NULL skip
-    //after getting the getPaintRange subarray, use that subset in each case to find the properties, else, use normal paint_t array
-    //for the full, triad, complimentary, or split complimentary, use getPaintHue to get those colors. 
-    //idk if its asking to find colors compatible or if its asking to only use those 12 colors.
-    // if it is only asking for those 12 colors, then make a struct containing the 12 colors then do the math, at tryad skip 6 etc.
-    //if pallete color != getPaintRange subset paints[i].marketingName then dont put in printVal
+
+
     if (properties) {
-        float rmin = 0.0f
-        float rmax = 1.0f;
+        float rmin = 0.0f, rmax = 1.0f;
         gRange_t rangeType;
 
-        if (strcmp(properties, "granulating") == 0) {
+        if (strcmp(properties, "granulating") == 0) { //uses getPaintRange to see if it is in the granulating section
             rangeType = GRANULATING;
             rmin = 0.2f;
         } else if (strcmp(properties, "non-granulating") == 0) {
@@ -428,20 +427,70 @@ paint_t* getPalette(paint_t** pp, int* n, const char* type, const char* properti
             rmax = 1.0f;
         } else {
             printf("Unknown property: %s\n", properties);
+            free(palette);
             return NULL;
         }
 
-        filteredPaints = getPaintRange(*pp, *n, rmin, rmax, rangeType, &nspp);
-        if (filteredPaints == NULL || nspp == 0) {
+        filteredPaints = getPaintRange(*pp, *n, rmin, rmax, rangeType, &filteredCount); //depending on what property given, sets the min and max then finds the paints in 
+        if (filteredPaints == NULL || filteredCount == 0) {                            //the given subset and sees if they meet the criteria
             printf("No paints match the property: %s\n", properties);
+            free(palette);
             return NULL;
         }
     }
-    switch (type){
-        
-        if (full):
-            while(currentPos != 12)
-            if(properties != NULL){break}
-            
+
+    //was originally adjusting for properties but would not work
+    int baseColour = 0;  
+    if (strncmp(type, "full", 4) == 0) {
+        const char* baseColourName = type + 5;
+        if (strlen(baseColourName) > 0) {
+            for (int i = 0; i < 12; i++) {
+                if (strcmp(colorNames[i], baseColourName) == 0) {
+                    baseColour = i;
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < 12; i++) {
+            printf("%s\n", colorNames[(baseColour + i) % 12]);
+        }
+    } else if (strncmp(type, "triad:", 6) == 0) {
+        const char* baseColourName = type + 6;
+        for (int i = 0; i < 12; i++) {
+            if (strcmp(colorNames[i], baseColourName) == 0) {
+                baseColour = i;
+                break;
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            printf("%s\n", colorNames[(baseColour + (i * 4)) % 12]);
+        }
+    } else if (strncmp(type, "complimentary:", 14) == 0) {
+        const char* baseColourName = type + 14;
+        for (int i = 0; i < 12; i++) {
+            if (strcmp(colorNames[i], baseColourName) == 0) {
+                baseColour = i;
+                break;
+            }
+        }
+        int opposite = (baseColour + 6) % 12;
+        printf("%s\n", colorNames[baseColour]);
+        printf("%s\n", colorNames[opposite]);
+    } else if (strncmp(type, "split-complimentary:", 20) == 0) {
+        const char* baseColourName = type + 20;
+        for (int i = 0; i < 12; i++) {
+            if (strcmp(colorNames[i], baseColourName) == 0) {
+                baseColour = i;
+                break;
+            }
+        }
+        int oppositeLeft = (baseColour + 5) % 12;
+        int oppositeRight = (baseColour + 7) % 12;
+        printf("%s\n", colorNames[baseColour]);
+        printf("%s\n", colorNames[oppositeLeft]);
+        printf("%s\n", colorNames[oppositeRight]);
+    } else {
+        printf("Unknown palette type: %s\n", type);
     }
+    return 0;
 }

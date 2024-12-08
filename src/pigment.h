@@ -80,7 +80,7 @@ paint_t* getPaintValue(paint_t* pp, int npp, char* name, gValue_t getType, int* 
 
 //prototypes for milestone 3
 paint_t* getPaintHue(paint_t* pp, int* n, colour_t colour); //q1
-
+paint_t* getPalette(paint_t** pp, int* n, const char* type, const char* properties);
 
 
 

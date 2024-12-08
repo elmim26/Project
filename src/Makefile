@@ -13,6 +13,9 @@ paintProgram: pigment.o paintProgram.o
 test_print: pigment.o test_print.o
 	$(CC) -o test_print pigment.o test_print.o
 
+test_pallete: pigment.o test_pallete.o
+	$(CC) -o test_pallete pigment.o test_pallete.o
+	
 test_value: pigment.o test_value.o
 	$(CC) -o test_value pigment.o test_value.o
 
