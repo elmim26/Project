@@ -381,9 +381,26 @@ paint_t* getPaintHue(paint_t* pp, int* n, colour_t colour) {
 }
 
 //question 2 MS3
-paint_t* pps getPalette(paint_t** pp, int* n, type*, properties*){
+paint_t* getPalette(paint_t** pp, int* n, const char* type, const char* properties){
         if (pp == NULL || n == NULL || *n <= 0) {
         return NULL; // Invalid input
+    }
+    int palletePos = 12;
+    int currentPos = 0; //counter to iterate and grab each pallete point
+    const char* getColourName(colour_t colour) {
+        const char* names[] = {
+            "yellow", "yellow-Orange", "Orange", "red-Orange", "red",
+            "red-Violet", "violet", "blue-Violet", "Blue", "blue-Green",
+            "green", "yellow-Green"
+        };
+        return names[colour];
+    }
+    paint_t paints[800]; 
+    int x = 800; 
+    int res = loadPaintData("paints.dat", paints, &x);
+    if (res != 0) {
+        printf("Failed to load paint data.\n");
+        return EXIT_FAILURE;
     }
     //max chroma, granulating/non-granulating, transparent
     //if max chroma idk, if granulating or non-granulating, anything 1 to 4 or anything 0, use getPaintRange, if transparent, getPaintRange for transparent 4. 
@@ -393,9 +410,38 @@ paint_t* pps getPalette(paint_t** pp, int* n, type*, properties*){
     //for the full, triad, complimentary, or split complimentary, use getPaintHue to get those colors. 
     //idk if its asking to find colors compatible or if its asking to only use those 12 colors.
     // if it is only asking for those 12 colors, then make a struct containing the 12 colors then do the math, at tryad skip 6 etc.
+    //if pallete color != getPaintRange subset paints[i].marketingName then dont put in printVal
+    if (properties) {
+        float rmin = 0.0f
+        float rmax = 1.0f;
+        gRange_t rangeType;
+
+        if (strcmp(properties, "granulating") == 0) {
+            rangeType = GRANULATING;
+            rmin = 0.2f;
+        } else if (strcmp(properties, "non-granulating") == 0) {
+            rangeType = GRANULATING;
+            rmax = 0.1f;
+        } else if (strcmp(properties, "transparent") == 0) {
+            rangeType = TRANSPARENT;
+            rmin = 1.0f;
+            rmax = 1.0f;
+        } else {
+            printf("Unknown property: %s\n", properties);
+            return NULL;
+        }
+
+        filteredPaints = getPaintRange(*pp, *n, rmin, rmax, rangeType, &nspp);
+        if (filteredPaints == NULL || nspp == 0) {
+            printf("No paints match the property: %s\n", properties);
+            return NULL;
+        }
+    }
     switch (type){
         
-        case full:
-            if(properties != NULL){}
+        if (full):
+            while(currentPos != 12)
+            if(properties != NULL){break}
+            
     }
 }

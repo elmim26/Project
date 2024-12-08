@@ -10,9 +10,9 @@ typedef enum {
 // Function to get the color name as a string
 const char* getColourName(colour_t colour) {
     const char* names[] = {
-        "Red", "Red-Orange", "Orange", "Yellow-Orange", "Yellow",
-        "Yellow-Green", "Green", "Blue-Green", "Blue", "Blue-Violet",
-        "Violet", "Red-Violet"
+        "yellow", "yellow-Orange", "Orange", "red-Orange", "red",
+        "red-Violet", "violet", "blue-Violet", "Blue", "blue-Green",
+        "green", "yellow-Green"
     };
     return names[colour];
 }
