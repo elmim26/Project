@@ -440,11 +440,11 @@ paint_t* getPalette(paint_t** pp, int* n, const char* type, const char* properti
     }
 
     //was originally adjusting for properties but would not work
-    int baseColour = 0;  
-    if (strncmp(type, "full", 4) == 0) {
-        const char* baseColourName = type + 5;
+    int baseColour = 0;  //starts at yellow if new color not declared
+    if (strncmp(type, "full", 4) == 0) {    
+        const char* baseColourName = type + 5; 
         if (strlen(baseColourName) > 0) {
-            for (int i = 0; i < 12; i++) {
+            for (int i = 0; i < 12; i++) {  //go through each array color and return it in arr
                 if (strcmp(colorNames[i], baseColourName) == 0) {
                     baseColour = i;
                     break;
@@ -452,9 +452,9 @@ paint_t* getPalette(paint_t** pp, int* n, const char* type, const char* properti
             }
         }
         for (int i = 0; i < 12; i++) {
-            printf("%s\n", colorNames[(baseColour + i) % 12]);
+            printf("%s\n", colorNames[(baseColour + i) % 12]); //prints the new array going in a circle
         }
-    } else if (strncmp(type, "triad:", 6) == 0) {
+    } else if (strncmp(type, "triad:", 6) == 0) {  
         const char* baseColourName = type + 6;
         for (int i = 0; i < 12; i++) {
             if (strcmp(colorNames[i], baseColourName) == 0) {
@@ -463,7 +463,7 @@ paint_t* getPalette(paint_t** pp, int* n, const char* type, const char* properti
             }
         }
         for (int i = 0; i < 3; i++) {
-            printf("%s\n", colorNames[(baseColour + (i * 4)) % 12]);
+            printf("%s\n", colorNames[(baseColour + (i * 4)) % 12]); //takes 3 of the array items
         }
     } else if (strncmp(type, "complimentary:", 14) == 0) {
         const char* baseColourName = type + 14;
